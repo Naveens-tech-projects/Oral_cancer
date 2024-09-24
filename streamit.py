@@ -1,6 +1,8 @@
 import streamlit as st
-from tensorflow.keras.models import load_model
+import tensorflow as tf
+from tensorflow.python.keras.models import load_model
 from PIL import Image
+
 import numpy as np
 
 model = load_model('oral_cancer_densenet_model.h5')
