@@ -1,11 +1,11 @@
 import streamlit as st
-import tensorflow.python.keras.models
+import tensorflow as tf
 
 from PIL import Image
 
 import numpy as np
 
-model = tensorflow.python.keras.models.load_model('oral_cancer_densenet_model.h5')
+model = tf.keras.models.load_model('oral_cancer_densenet_model.h5')
 class_labels = ["cancer", "non cancer"]
 
 
