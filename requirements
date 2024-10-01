@@ -1,6 +1,0 @@
-streamlit==1.26.0
-
-numpy==1.24.3
-tensorflow
-Pillow==10.0.0
-
