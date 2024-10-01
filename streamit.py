@@ -9,7 +9,7 @@ class_labels = ["cancer", "non cancer"]
 
 st.title("Oral Cancer Detection")
 
-uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])d4rftgyhuj
+uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
 def preprocess_image(img):
     IMG_HEIGHT = 224
     IMG_WIDTH = 224
