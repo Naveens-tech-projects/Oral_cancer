@@ -17,7 +17,7 @@ def create_connection():
 
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
-
+user=""
 def register_user(username, password):
     conn = create_connection()
     cursor = conn.cursor()
@@ -47,28 +47,6 @@ def preprocess_image(img):
     return img
 
 # Cancer detection page
-def show_cancer_detection():
-    st.subheader("Oral Cancer Detection")
-
-    uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
-    if uploaded_file is not None:
-        img = Image.open(uploaded_file).convert('RGB')
-        processed_img = preprocess_image(img)
-        st.image(img, caption='Uploaded Image', use_column_width=True)
-
-
-        def predict():
-            prediction = model.predict(processed_img)
-            predicted_class = class_labels[int(np.round(prediction[0]))]
-            st.write(f"Prediction: {predicted_class}")
-
-        if st.button("Predict"):
-            predict()
-
-    # Logout button
-    if st.button("Logout"):
-        st.session_state['logged_in'] = False
-        st.rerun()
 
 # Main application
 def main():
@@ -96,6 +74,7 @@ def main():
         elif choice == "Login":
             st.subheader("Login")
             username = st.text_input("Username")
+            user=username
             password = st.text_input("Password", type='password')
             if st.button("Login"):
                 user = authenticate_user(username, password)
@@ -105,6 +84,31 @@ def main():
                     st.rerun()  # Rerun the app to reflect the logged-in state
                 else:
                     st.error("Invalid username or password.")
+
+def show_cancer_detection():
+    st.subheader("Oral Cancer Detection")
+    st.header(user+ "welcome")
+
+    uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
+    if uploaded_file is not None:
+        img = Image.open(uploaded_file).convert('RGB')
+        processed_img = preprocess_image(img)
+        st.image(img, caption='Uploaded Image', use_column_width=True)
+
+
+        def predict():
+            prediction = model.predict(processed_img)
+            predicted_class = class_labels[int(np.round(prediction[0]))]
+            st.write(f"Prediction: {predicted_class}")
+
+        if st.button("Predict"):
+            predict()
+
+    # Logout button
+    if st.button("Logout"):
+        st.session_state['logged_in'] = False
+        st.rerun()
+
 
 if __name__ == "__main__":
     main()
