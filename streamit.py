@@ -5,7 +5,7 @@ from PIL import Image
 import numpy as np
 
 model = tf.keras.models.load_model('best_model_VGG19.h5')
-class_labels = ["cancer", "non canvcer"]
+class_labels = ["cancenr", "non canvcer"]
 
 st.title("Oral Cancer Detection")
 
