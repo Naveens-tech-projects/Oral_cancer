@@ -33,7 +33,8 @@ setuptools
 six>=1.12.0
 termcolor>=1.1.0
 wrapt>=1.11.0
-tensorboard>=2.16,<2.18
 grpcio>=1.24.3,<2.0
+tensorboard>=2.16,<2.18
+
 
 
