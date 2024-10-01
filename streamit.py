@@ -10,6 +10,20 @@ import numpy as np
 model = tf.keras.models.load_model('best_model_VGG19.h5')
 class_labels = ["cancerr", "non cancer"]
 
+def create_database():
+    conn = sqlite3.connect('users.db')
+    cursor = conn.cursor()
+    cursor.execute('''
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT NOT NULL UNIQUE,
+            password TEXT NOT NULL
+        )
+    ''')
+    conn.commit()
+    conn.close()
+
+create_database()
 # Database connection and user management
 def create_connection():
     conn = sqlite3.connect('users.db')
