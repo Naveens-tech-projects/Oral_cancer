@@ -8,22 +8,8 @@ import numpy as np
 
 # Load the pre-trained model
 model = tf.keras.models.load_model('best_model_VGG19.h5')
-class_labels = ["cancerr", "non cancer"]
+class_labels = ["cancer", "non cancer"]
 
-def create_database():
-    conn = sqlite3.connect('users.db')
-    cursor = conn.cursor()
-    cursor.execute('''
-        CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            username TEXT NOT NULL UNIQUE,
-            password TEXT NOT NULL
-        )
-    ''')
-    conn.commit()
-    conn.close()
-
-create_database()
 # Database connection and user management
 def create_connection():
     conn = sqlite3.connect('users.db')
@@ -31,7 +17,7 @@ def create_connection():
 
 def hash_password(password):
     return hashlib.sha256(password.encode()).hexdigest()
-user=""
+
 def register_user(username, password):
     conn = create_connection()
     cursor = conn.cursor()
@@ -61,6 +47,38 @@ def preprocess_image(img):
     return img
 
 # Cancer detection page
+def show_cancer_detection():
+    st.subheader("Oral Cancer Detection")
+
+    uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
+    if uploaded_file is not None:
+        img = Image.open(uploaded_file).convert('RGB')
+        processed_img = preprocess_image(img)
+        st.image(img, caption='Uploaded Image', use_column_width=True)
+
+
+        def predict():
+            prediction = model.predict(processed_img)
+            predicted_class = class_labels[int(np.round(prediction[0]))]
+            confidence=np.max(prediction)*100
+
+            if(confidence<=60) and predicted_class=="cancer":
+                vedio_file=open('vedio.mp4',"rb")
+                vedio_bytes=vedio_file.read()
+                st.video(vedio_bytes)
+                st.header("invalid image,idiot(TRY TO USE YOUR BRAIN) vera vela pplapu illa oral cancer ku un photo")
+                st.write(confidence)
+            else:
+                st.write(f"Prediction: {predicted_class}")
+                st.write(confidence)
+
+        if st.button("Predict"):
+            predict()
+
+    # Logout button
+    if st.button("Logout"):
+        st.session_state['logged_in'] = False
+        st.rerun()
 
 # Main application
 def main():
@@ -88,7 +106,6 @@ def main():
         elif choice == "Login":
             st.subheader("Login")
             username = st.text_input("Username")
-            user=username
             password = st.text_input("Password", type='password')
             if st.button("Login"):
                 user = authenticate_user(username, password)
@@ -98,31 +115,6 @@ def main():
                     st.rerun()  # Rerun the app to reflect the logged-in state
                 else:
                     st.error("Invalid username or password.")
-
-def show_cancer_detection():
-    st.subheader("Oral Cancer Detection")
-    st.header(user+ "welcome")
-
-    uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
-    if uploaded_file is not None:
-        img = Image.open(uploaded_file).convert('RGB')
-        processed_img = preprocess_image(img)
-        st.image(img, caption='Uploaded Image', use_column_width=True)
-
-
-        def predict():
-            prediction = model.predict(processed_img)
-            predicted_class = class_labels[int(np.round(prediction[0]))]
-            st.write(f"Prediction: {predicted_class}")
-
-        if st.button("Predict"):
-            predict()
-
-    # Logout button
-    if st.button("Logout"):
-        st.session_state['logged_in'] = False
-        st.rerun()
-
 
 if __name__ == "__main__":
     main()
