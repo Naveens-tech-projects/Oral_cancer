@@ -99,29 +99,6 @@ def main():
                 else:
                     st.error("Invalidd username or password.")
 
-def show_cancer_detection():
-    st.subheader("Oral Cancer Detection")
-    st.header(user+ "welcome")
-
-    uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
-    if uploaded_file is not None:
-        img = Image.open(uploaded_file).convert('RGB')
-        processed_img = preprocess_image(img)
-        st.image(img, caption='Uploaded Image', use_column_width=True)
-
-
-        def predict():
-            prediction = model.predict(processed_img)
-            predicted_class = class_labels[int(np.round(prediction[0]))]
-            st.write(f"Prediction: {predicted_class}")
-
-        if st.button("Predict"):
-            predict()
-
-    # Logout button
-    if st.button("Logout"):
-        st.session_state['logged_in'] = False
-        st.rerun()
 
 
 def show_cancer_detection():
@@ -137,8 +114,22 @@ def show_cancer_detection():
 
         def predict():
             prediction = model.predict(processed_img)
-            predicted_class = class_labels[int(np.round(prediction[0]))]
-            st.write(f"Prediction: {predicted_class}")
+            predicted_class = class_labels[int(np.max(prediction[0]))]
+            confidence=np.max(prediction)
+
+            confidence_percentage = int(round(confidence * 100))
+
+            if confidence < 0.01:  # If the confidence is less than 1%
+                st.warning("IDIOT PROVIDE APROPRIATE IMAGES..")
+                st.video('https://www.youtube.com/watch?v=OFALOYGJ_ns')
+            else:
+                # Check confidence and show video if confidence is low for cancer prediction
+                if confidence < 0.60 and predicted_class == "cancer":
+                    st.video('https://www.youtube.com/watch?v=OFALOYGJ_ns')
+                    st.warning("The image is not clear. Please try again.")
+                else:
+                    st.write(f"Prediction: {predicted_class} (Confidence: {confidence_percentage}%)")
+
 
         if st.button("Predict"):
             predict()
