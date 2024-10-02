@@ -124,5 +124,30 @@ def show_cancer_detection():
         st.rerun()
 
 
+def show_cancer_detection():
+    st.subheader("Oral Cancer Detection")
+    st.header(user+ "welcome")
+
+    uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "jpeg", "png"])
+    if uploaded_file is not None:
+        img = Image.open(uploaded_file).convert('RGB')
+        processed_img = preprocess_image(img)
+        st.image(img, caption='Uploaded Image', use_column_width=True)
+
+
+        def predict():
+            prediction = model.predict(processed_img)
+            predicted_class = class_labels[int(np.round(prediction[0]))]
+            st.write(f"Prediction: {predicted_class}")
+
+        if st.button("Predict"):
+            predict()
+
+    # Logout button
+    if st.button("Logout"):
+        st.session_state['logged_in'] = False
+        st.rerun()
+
+
 if __name__ == "__main__":
     main()
