@@ -114,9 +114,16 @@ def show_cancer_detection():
             prediction = model.predict(processed_img)
             predicted_class = class_labels[int(np.round(prediction[0]))]
             st.write(f"Prediction: {predicted_class}")
+            confidence = np.max(prediction) * 100
 
-        if st.button("Predict"):
-            predict()
+            if (confidence <= 60) and predicted_class == "cancer":
+
+                st.video('https://www.youtube.com/shorts/VDa__O9CxjA')
+                st.header("invalid image,idiot(TRY TO USE YOUR BRAIN) vera vela pplapu illa oral cancer ku un photo")
+                st.write(confidence)
+            else:
+                st.write(f"Prediction: {predicted_class}")
+                st.write(confidence)
 
     # Logout button
     if st.button("Logout"):
