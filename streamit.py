@@ -63,9 +63,8 @@ def show_cancer_detection():
             confidence=np.max(prediction)*100
 
             if(confidence<=60) and predicted_class=="cancer":
-                vedio_file=open('vedio.mp4',"rb")
-                vedio_bytes=vedio_file.read()
-                st.video(vedio_bytes)
+                
+                st.video('https://www.youtube.com/shorts/VDa__O9CxjA')
                 st.header("invalid image,idiot(TRY TO USE YOUR BRAIN) vera vela pplapu illa oral cancer ku un photo")
                 st.write(confidence)
             else:
