@@ -97,7 +97,7 @@ def main():
                     st.success(f"Welcome, {username}!")
                     st.rerun()  # Rerun the app to reflect the logged-in state
                 else:
-                    st.error("Invalid username or password.")
+                    st.error("Invalidd username or password.")
 
 def show_cancer_detection():
     st.subheader("Oral Cancer Detection")
