@@ -122,7 +122,7 @@ def show_cancer_detection():
                 st.header("invalid image,idiot(TRY TO USE YOUR BRAIN) vera vela pplapu illa oral cancer ku un photo")
                 st.write(confidence)
             else:
-                st.write(f"Prediction: {predicted_class}")
+                st.write(f"Predictiona: {predicted_class}")
                 st.write(confidence)
 
     # Logout button
